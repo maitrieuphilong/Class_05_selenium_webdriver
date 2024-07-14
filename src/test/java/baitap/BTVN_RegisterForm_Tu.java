@@ -1,20 +1,22 @@
-package webdriver;
+package baitap;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
+import java.util.List;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-public class BTVN_RegisterForm {
+public class BTVN_RegisterForm_Tu {
 	WebDriver driver;
 
 	@BeforeClass
@@ -77,6 +79,45 @@ public class BTVN_RegisterForm {
 		Assert.assertEquals("Your registration completed", result);
 //		Thread.sleep(5000);
 	}
+	
+	@Test
+	public void Drag_n_Drop() throws InterruptedException {
+		//Mở link
+		driver.get("https://automationfc.github.io/kendo-drag-drop/");
+		
+		//Action
+        WebElement smallcicle = driver.findElement(By.id("draggable"));
+        WebElement bigcicle = driver.findElement(By.id("droptarget"));
+        Actions action = new Actions(driver);
+        action.dragAndDrop(smallcicle, bigcicle).perform();
+//        Thread.sleep(3000);
+        
+        //Check kq
+        Assert.assertEquals("You did great!", bigcicle.getText());
+	}
+	
+	@Test
+	public void TC_03_Multi_Select() {
+		// Mở link
+		driver.get("https://automationfc.github.io/jquery-selectable/");
+		
+		//Actions
+		List<WebElement> elements = driver.findElements(By.xpath("//*[@id='selectable']/li"));
+		Actions action = new Actions(driver);
+		action.keyDown(Keys.COMMAND).perform();
+		elements.get(1).click();
+		elements.get(2).click();
+		action.keyUp(Keys.COMMAND).perform();
+		sleepInSeconds(3);
+	}
+	
+	public void sleepInSeconds(long timeInSecond) {
+        try {
+            Thread.sleep(timeInSecond * 1000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 	@AfterClass
 	public void afterClass() {
